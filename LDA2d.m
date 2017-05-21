@@ -1,16 +1,15 @@
-function [ P, X  ] = LDA2d( X_trn, k, percent  )
+function [ P, X  ] = LDA2d( X_trn, num, k, percent  )
 if nargin <1
     help LDA2d;
 end
-if nargin < 2
+if nargin < 3
     k=0;
-    percent=0.9;
 end
-if nargin<3
+if nargin<4
     percent=0.9;
 end
 
-[c,num]=size(X_trn);
+c=length(X_trn)/num;
 [m,n]=size(X_trn{1});
 X_sample_mean=cell(c,1);
 X_mean=zeros(m,n);
@@ -19,8 +18,8 @@ X_mean=zeros(m,n);
 for i=1:c
     X_sample_mean{i}=zeros(m,n);
     for j=1:num
-        X_sample_mean{i}=X_sample_mean{i}+X_trn{i,j};
-        X_mean=X_mean+X_trn{i,j};
+        X_sample_mean{i}=X_sample_mean{i}+X_trn{num*(i-1)+j};
+        X_mean=X_mean+X_trn{num*(i-1)+j};
     end
     X_sample_mean{i}=X_sample_mean{i}/num;
 end
@@ -36,16 +35,15 @@ end
 Sw=0;
 for i=1:c
     for j=1:num
-        Sw=Sw+(X_trn{i,j}-X_sample_mean{i})*(X_trn{i,j}-X_sample_mean{i})';
+        Sw=Sw+(X_trn{num*(i-1)+j}-X_sample_mean{i})*(X_trn{num*(i-1)+j}-X_sample_mean{i})';
     end
 end
 Sw=Sw/c/num;
 
 % 计算特征值和特征向量
-Sw=Sw+eye(size(Sw,1))*1.e-8;
 [fvec,fvalue]=eig(inv(Sw)*Sb);
-fvalue=diag(rot90(rot90(fvalue)));
-fvec=rot90(fvec);
+fvalue=diag(fvalue);
+
 % 如果未给出k值，则计算k值
 sumper=0;
 t=sum(fvalue);
@@ -58,10 +56,10 @@ end
 P=fvec(1:k,:);
 
 % 计算投影后的样本
-X=cell(c,num);
+X=cell(c*num,1);
 for i=1:c
     for j=1:num
-        X{i,j}=P*X_trn{i,j};
+        X{num*(i-1)+j}=P*X_trn {num*(i-1)+j};
     end
 end
 end

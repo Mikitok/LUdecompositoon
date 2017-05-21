@@ -1,11 +1,13 @@
-function [ X_lu ] = ludecomposition( X_trn )
+function [ X_lu, Y_lu] = ludecomposition( X_trn, Y_trn )
 % ludecomposition函数是用lu分解生成两张近似图像。
 % X_trn是单样本训练集，为一个num*1的cell元组。
-% X_lu是原样本和生成的近似图像的集合，为一个num*3的cell元组。
+% Y_trn是和每个样本对应的标签集，为一个num*1的列向量。
+% X_lu是原样本和生成的近似图像的集合，为一个3num*1的cell元组。
+% Y_lu是和X_lu中样本对应的标签集，为一个3num*1的列向量。
 
 samplenum=length(X_trn);
 [m,n]=size(X_trn{1});
-X_lu=cell(samplenum,3);
+X_lu=cell(3*samplenum,1);
 
 b1=cell( n , 1 );
 ind1=zeros( n , 1 );
@@ -14,7 +16,7 @@ ind2=zeros(m,1);
 for i=1:samplenum
     X_trn{i}=double(X_trn{i});
     % 保存原有的训练样本
-    X_lu{i,1}=X_trn{i};
+    X_lu{3*(i-1)+1}=X_trn{i};
     
     % 对训练样本求近似图像
     [l,u,p]=lu(X_trn{i});
@@ -33,7 +35,7 @@ for i=1:samplenum
         ef=ef+ind1(k);
         s1=s1+ b1{dx1(k)};
     end
-    X_lu{i,2}=p' * s1;
+    X_lu{3*i-1}=p' * s1;
     
     %对训练样本的转置求近似图像
     X_trn{i}=X_trn{i}';
@@ -53,8 +55,10 @@ for i=1:samplenum
         ef=ef+ind2(k);
         s2=s2+ b2{dx2(k)};
      end
-    X_lu{i,3}=(p' * s2)';
+    X_lu{3*i}=(p' * s2)';
     %imshow(uint8(X_lu{3*i}));
 end
+Y_lu=[Y_trn,Y_trn,Y_trn]; 
+Y_lu=reshape(Y_lu',samplenum*3,1);
 end
 
