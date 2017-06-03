@@ -20,24 +20,24 @@ clear;
 %     end
 % end
 
-load ORL_group.mat;
-
-numtrn=length(X_trn);
-numtst=length(X_tst);
-
-[X_lu,Y_lu]=ludecomposition(X_trn,Y_trn);
-[vec, val] = tdfda(X_lu, max(Y_trn)) ;
-k=15;
-for i=1:numtrn*3
-    X_trn{i}=double(X_lu{i})*vec(:,1:k);
-    %X_trn{i}=double(X_trn{i});
-end
-for i=1:numtst
-    X_tst{i}=double(X_tst{i})*vec(:,1:k);
-    %X_tst{i}=double(X_tst{i});
-end
-d=discompute(X_trn,X_tst);
-out=distclassify(d, Y_lu);
+% load ORL_group.mat;
+% 
+% numtrn=length(X_trn);
+% numtst=length(X_tst);
+% 
+% [X_lu,Y_lu]=ludecomposition(X_trn,Y_trn);
+% [vec, val] = tdfda(X_lu, max(Y_trn)) ;
+% k=15;
+% for i=1:numtrn*3
+%     X_trn{i}=double(X_lu{i})*vec(:,1:k);
+%     %X_trn{i}=double(X_trn{i});
+% end
+% for i=1:numtst
+%     X_tst{i}=double(X_tst{i})*vec(:,1:k);
+%     %X_tst{i}=double(X_tst{i});
+% end
+% d=discompute(X_trn,X_tst);
+% out=distclassify(d, Y_lu);
 % for i=1:5
 %     for j=1:3
 %         subplot(5,3,3*(i-1)+j);
