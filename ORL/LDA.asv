@@ -1,0 +1,50 @@
+function W=LDA(Input,Target,dims)
+% Input:    n*d matrix,each row is a sample;
+% Target:   n*1 matrix,each is the class label 
+% W:         d*(k-1) matrix,to project samples to (k-1) dimention
+%dims:      the target dimension
+% cneters:  k*(k-1) matrix,the means of each after projection 
+
+
+% 初始化
+[n,dim]=size(Input);   %  n：样本数目
+ClassLabel=unique(Target);   %  ClassLabel：样本标签（不重复）
+c=length(ClassLabel);   % c：样本数目
+
+nGroup=NaN(c,1);            % group count
+GroupMean=NaN(c,dim);       % 每类的均值
+W=NaN(c-1,dim);             % the final transfer matrix
+SB=zeros(dim,dim);          % 类间离散度矩阵
+SW=zeros(dim,dim);          % 类内离散度矩阵
+
+% 计算类内离散度矩阵和类间离散度矩阵
+for i=1:c    
+    group=(Target==ClassLabel(i));
+    nGroup(i)=sum(double(group));
+    GroupMean(i,:)=mean(Input(group,:));
+    tmp=zeros(dim,dim);
+    for j=1:n
+        if group(j)==1
+            t=Input(j,:)-GroupMean(i,:);
+            tmp=tmp+t'*t;
+        end
+    end
+    SW=SW+tmp;
+end
+m=mean(GroupMean);    
+for i=1:c
+    tmp=GroupMean(i,:)-m;
+    SB=SB+nGroup(i)*tmp'*tmp;
+end
+
+[V, L] = eig(SB,SW);
+[L,index]=sort(diag(L));
+V=V(:,index);
+index=find(L>1.e-5);
+
+L=L(index(end-dims+1:end));
+W=V(:,index(end-dims+1:end));
+
+
+    
+    

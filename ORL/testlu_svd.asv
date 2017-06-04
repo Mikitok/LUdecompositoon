@@ -1,5 +1,5 @@
-% clear;
-% 
+clear;
+
 % load ORL.mat;
 % 
 % X_trn=cell(40,1);
@@ -20,14 +20,20 @@
 %     end
 % end
 
-% load ORL_group.mat;
+load ORL_group.mat;
 
 numtrn=length(X_trn);
 numtst=length(X_tst);
 
 [X_svd,Y_svd]=svddecomposition(X_trn,Y_trn);
+[ X_lu, Y_lu] = ludecomposition( X_trn, Y_trn );
 k=15;
-for i=1:numtrn*2
+X_all=cell(4*numtrn,1);
+Y_all=zeros(4*numtrn,1);
+count1=1;
+count2=1;
+for i=1:numtrn*4
+    if (rem(i,4)==)
     X_trn{i}=double(X_svd{i})*vec(:,1:k);
     %X_trn{i}=double(X_trn{i});
 end
