@@ -1,5 +1,5 @@
 clear;
-load rate.mat;
+% load rate.mat;
 
 for t=0:9
 load ORL.mat;
@@ -31,29 +31,22 @@ numtst=length(X_tst);
 [vec, val] = tdfda(X_lu, max(Y_trn)) ;
 k=15;
 
-%%%%%%  使用生成的新的训练样本集分类%%%%%%
+% %%%%%  使用生成的新的训练样本集分类%%%%%%
 % for i=1:numtrn*3
-%     X_trn{i}=double(X_lu{i})*vec(:,1:k);
+%     X_trn{i}=vec(:,1:k)'*double(X_lu{i});
 %     %X_trn{i}=double(X_trn{i});
 % end
 
 %%%%%%  使用原先的训练样本集分类  %%%%%%%
 for i=1:numtrn
-    X_trn{i}=double(X_trn{i})*vec(:,1:k);
+    X_trn{i}=vec(:,1:k)'*double(X_trn{i});
     %X_trn{i}=double(X_trn{i});
 end
 for i=1:numtst
-    X_tst{i}=double(X_tst{i})*vec(:,1:k);
+    X_tst{i}=vec(:,1:k)'*double(X_tst{i});
     %X_tst{i}=double(X_tst{i});
 end
 d=discompute(X_trn,X_tst);
 out=distclassify(d, Y_trn);
-% for i=1:5
-%     for j=1:3
-%         subplot(5,3,3*(i-1)+j);
-%         imshow(uint8(a{i,j}));
-%     end
-% end
-
-rate(4,t+1)=mean(out==Y_tst);
+rate1(1,t+1)=mean(out==Y_tst);
 end

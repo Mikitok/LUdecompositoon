@@ -46,24 +46,24 @@ for i=1:numtrn*4
 end
 [vec, val] = tdfda(X_all, max(Y_all)) ;
 
-%%%%%%  使用生成的新的训练样本集分类%%%%%%
+% %%%%%  使用生成的新的训练样本集分类%%%%%%
 % for i=1:numtrn*4
-%     X_trn{i}=double(X_all{i})*vec(:,1:k);
+%     X_trn{i}=vec(:,1:k)'*double(X_all{i});
 %     %X_trn{i}=double(X_trn{i});
 % end
 
 %%%%%%  使用原先的训练样本集分类  %%%%%%%
 for i=1:numtrn
-    X_trn{i}=double(X_trn{i})*vec(:,1:k);
+    X_trn{i}=vec(:,1:k)'*double(X_trn{i});
     %X_trn{i}=double(X_trn{i});
 end
 
 for i=1:numtst
-    X_tst{i}=double(X_tst{i})*vec(:,1:k);
+    X_tst{i}=vec(:,1:k)'*double(X_tst{i});
     %X_tst{i}=double(X_tst{i});
 end
 d=discompute(X_trn,X_tst);
 out=distclassify(d, Y_trn);
 
-rate(6,t+1)=mean(out==Y_tst);
+rate1(1,t+1)=mean(out==Y_tst);
 end

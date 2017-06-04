@@ -31,24 +31,24 @@ numtst=length(X_tst);
 k=15;
 [vec, val] = tdfda(X_svd, max(Y_svd)) ;
 
-%%%%%%  使用生成的新的训练样本集分类%%%%%%
+% %%%%%  使用生成的新的训练样本集分类%%%%%%
 % for i=1:numtrn*2
-%     X_trn{i}=double(X_svd{i})*vec(:,1:k);
+%     X_trn{i}=vec(:,1:k)'*double(X_svd{i});
 %     %X_trn{i}=double(X_trn{i});
 % end
-
-%%%%%%  使用原先的训练样本集分类  %%%%%%%
+% 
+%%%%%  使用原先的训练样本集分类  %%%%%%%
 for i=1:numtrn
-    X_trn{i}=double(X_trn{i})*vec(:,1:k);
-    %X_trn{i}=double(X_trn{i});
+    X_trn{i}=vec(:,1:k)'*double(X_trn{i});
+%     X_trn{i}=double(X_trn{i});
 end
 
 for i=1:numtst
-    X_tst{i}=double(X_tst{i})*vec(:,1:k);
+    X_tst{i}=vec(:,1:k)'*double(X_tst{i});
     %X_tst{i}=double(X_tst{i});
 end
 d=discompute(X_trn,X_tst);
 out=distclassify(d, Y_trn);
 
-rate(5,t+1)=mean(out==Y_tst);
+rate1(1,t+1)=mean(out==Y_tst);
 end

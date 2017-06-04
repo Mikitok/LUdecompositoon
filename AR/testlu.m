@@ -3,6 +3,7 @@ load AR_part.mat;
 
 for k=1:15
 % for t=0:6
+% k=15;
 X_trn1=cell(100,1);
 X_tst1=cell(600,1);
 X_trn2=cell(100,1);
@@ -38,7 +39,7 @@ numtst=length(X_tst1);
 
 %%%%%%  使用生成的新的训练样本集分类%%%%%%
 for i=1:numtrn*3
-    X_trn1{i}=double(X_lu1{i})*vec1(:,1:k);
+    X_trn1{i}=vec1(:,1:k)'*double(X_lu1{i});
     %X_trn{i}=double(X_trn{i});
 end
 
@@ -48,7 +49,7 @@ end
 %     %X_trn{i}=double(X_trn{i});
 % end
 for i=1:numtst
-    X_tst1{i}=double(X_tst1{i})*vec1(:,1:k);
+    X_tst1{i}=vec1(:,1:k)'*double(X_tst1{i});
     %X_tst{i}=double(X_tst{i});
 end
 d=discompute(X_trn1,X_tst1);
@@ -59,7 +60,7 @@ ratek1(1,k)=mean(out==Y_tst1);
 [vec2, ~] = tdfda(X_lu2, max(Y_trn2)) ;
 %%%%%%  使用生成的新的训练样本集分类%%%%%%
 for i=1:numtrn*3
-    X_trn2{i}=double(X_lu2{i})*vec2(:,1:k);
+    X_trn2{i}=vec2(:,1:k)'*double(X_lu2{i});
     %X_trn{i}=double(X_trn{i});
 end
 
@@ -69,7 +70,7 @@ end
 %     %X_trn{i}=double(X_trn{i});
 % end
 for i=1:numtst
-    X_tst2{i}=double(X_tst2{i})*vec2(:,1:k);
+    X_tst2{i}=vec2(:,1:k)'*double(X_tst2{i});
     %X_tst{i}=double(X_tst{i});
 end
 d=discompute(X_trn2,X_tst2);

@@ -12,7 +12,7 @@ end
 meanSample = meanSample/nSample; 
 %------------------------------------------- 
 %类内均值 
-meanClass=cell(nSample,1);
+meanClass=cell(nClass,1);
 for i=1:nClass 
     meanClass{i} = zeros(height, width); 
     for j=1:nSamplePerClass 
@@ -22,16 +22,16 @@ for i=1:nClass
 end 
 %-------------------------------------------------- 
  
-Gb = zeros(width, width); 
+Gb = zeros(height, height); 
 for i=1:nClass 
-    Gb = Gb + nSamplePerClass*(meanClass{i}-meanSample)'*(meanClass{i}-meanSample); 
+    Gb = Gb + nSamplePerClass*(meanClass{i}-meanSample)*(meanClass{i}-meanSample)'; 
 end 
 Gb = Gb/nSample; 
  
-Gw = zeros(width, width); 
+Gw = zeros(height, height); 
 for i=1:nClass 
     for j=1:nSamplePerClass 
-        Gw = Gw + (sample{(i-1)*nSamplePerClass+j}-meanClass{i})'*(sample{(i-1)*nSamplePerClass+j}-meanClass{i}); 
+        Gw = Gw + (sample{(i-1)*nSamplePerClass+j}-meanClass{i})*(sample{(i-1)*nSamplePerClass+j}-meanClass{i})'; 
     end 
 end 
 Gw = Gw/nSample; 

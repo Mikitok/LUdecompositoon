@@ -11,8 +11,8 @@ X_lu=cell(3*samplenum,1);
 
 b1=cell( n , 1 );
 ind1=zeros( n , 1 );
-b2=cell( m, 1);
-ind2=zeros(m,1);
+b2=cell( n, 1);
+ind2=zeros(n,1);
 for i=1:samplenum
     X_trn{i}=double(X_trn{i});
     % 保存原有的训练样本
@@ -53,7 +53,7 @@ for i=1:samplenum
      while ef<0.92
         k=k+1;
         ef=ef+ind2(k);
-        s2=s2+ b2{dx2(k)};
+        s2=s2+ b2{dx2(k)}; 
      end
     X_lu{3*i}=(p' * s2)';
     %imshow(uint8(X_lu{3*i}));
