@@ -1,0 +1,9 @@
+function [X, = test( X_trn, Y_, method, lda, trainsample, t, k )
+%  
+%  method 是表示图像分解的方法，有lu, svd, lu_svd三个选项，默认lu
+%  lda是表示lda的方法：有lfda，rlda，bdlda三种，默认为lfda
+%  trainsample是表示用的训练样本是原来的样本还是新的训练样本，有：origin、new两种，默认为new
+%  t是表示用第几个作为训练样本
+
+end
+

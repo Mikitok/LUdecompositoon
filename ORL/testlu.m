@@ -1,8 +1,9 @@
 clear;
-% load rate.mat;
+load rate1.mat;
+load ORL.mat;
 
 for t=0:9
-load ORL.mat;
+k=15;
 
 X_trn=cell(40,1);
 X_tst=cell(360,1);
@@ -28,25 +29,29 @@ numtrn=length(X_trn);
 numtst=length(X_tst);
 
 [X_lu,Y_lu]=ludecomposition(X_trn,Y_trn);
-[vec, val] = tdfda(X_lu, max(Y_trn)) ;
-k=15;
+[vec1, val1] = tdfda(X_lu, max(Y_trn)) ;
+[vec, val] = tdfda1(X_lu, max(Y_trn)) ;
 
-% %%%%%  使用生成的新的训练样本集分类%%%%%%
-% for i=1:numtrn*3
-%     X_trn{i}=vec(:,1:k)'*double(X_lu{i});
+%%%%%  使用生成的新的训练样本集分类%%%%%%
+for i=1:numtrn*3
+    X_trn{i}=vec1(:,1:k)'*double(X_lu{i});
+    %X_trn{i}=double(X_trn{i});
+    X_trn{i}=double(X_lu{i})*vec(:,1:k);
+end
+
+% %%%%%%  使用原先的训练样本集分类  %%%%%%%
+% for i=1:numtrn
+% %     X_trn{i}=vec1(:,1:k)'*double(X_trn{i});
 %     %X_trn{i}=double(X_trn{i});
+%         X_trn{i}=double(X_trn{i})*vec(:,1:k);
 % end
 
-%%%%%%  使用原先的训练样本集分类  %%%%%%%
-for i=1:numtrn
-    X_trn{i}=vec(:,1:k)'*double(X_trn{i});
-    %X_trn{i}=double(X_trn{i});
-end
 for i=1:numtst
-    X_tst{i}=vec(:,1:k)'*double(X_tst{i});
+    X_tst{i}=vec1(:,1:k)'*double(X_tst{i});
     %X_tst{i}=double(X_tst{i});
+    X_tst{i}=double(X_tst{i})*vec(:,1:k);
 end
 d=discompute(X_trn,X_tst);
 out=distclassify(d, Y_trn);
-rate1(1,t+1)=mean(out==Y_tst);
+rate2(1,t+1)=mean(out==Y_tst);
 end
