@@ -1,4 +1,4 @@
-function [vec, val] = tdfda1(sample, nClass) 
+function [vec, val] = left_lda(sample, nClass) 
  
 nSample = length(sample); 
 [height, width] = size(sample{1}); 
@@ -22,16 +22,16 @@ for i=1:nClass
 end 
 %-------------------------------------------------- 
  
-Gb = zeros(width, width); 
+Gb = zeros(height, height); 
 for i=1:nClass 
-    Gb = Gb + nSamplePerClass*(meanClass{i}-meanSample)'*(meanClass{i}-meanSample); 
+    Gb = Gb + nSamplePerClass*(meanClass{i}-meanSample)*(meanClass{i}-meanSample)'; 
 end 
 Gb = Gb/nSample; 
  
-Gw = zeros(width, width); 
+Gw = zeros(height, height); 
 for i=1:nClass 
     for j=1:nSamplePerClass 
-        Gw = Gw + (sample{(i-1)*nSamplePerClass+j}-meanClass{i})'*(sample{(i-1)*nSamplePerClass+j}-meanClass{i}); 
+        Gw = Gw + (sample{(i-1)*nSamplePerClass+j}-meanClass{i})*(sample{(i-1)*nSamplePerClass+j}-meanClass{i})'; 
     end 
 end 
 Gw = Gw/nSample; 
