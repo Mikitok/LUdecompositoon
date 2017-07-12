@@ -33,9 +33,19 @@ end
 Ytrn=[Ytrnlu;Ytrnsvd];
 d1=discompute(Xtrnlu,Xtstlu);
 d2=discompute(Xtrnsvd,Xtstsvd);
-d=[d1,d2];
-[~,ind]=min(d,[],2);
-out=Ytrn(ind);
+
+%%%%   使用最小值   %%%%
+% d=[d1,d2];
+% [~,ind]=min(d,[],2);
+% out=Ytrn(ind);
+% rate1(t+1)=mean(out==Y_tst1);
+
+%%%%   使用平均值   %%%%
+d=zeros(600,100);
+for i=1:100
+    d(:,i)=mean([d1(:,(i*3-2):i*3),d2(:,i)],2);
+end
+[~,out]=min(d,[],2);
 rate1(t+1)=mean(out==Y_tst1);
 
 [Xtrnlu, Ytrnlu, Xtstlu] =  processing( X_trn2, Y_trn2, X_tst2, 'lu', 'left_lda', [15,15], 'new' );
@@ -43,9 +53,18 @@ rate1(t+1)=mean(out==Y_tst1);
 Ytrn=[Ytrnlu;Ytrnsvd];
 d1=discompute(Xtrnlu,Xtstlu);
 d2=discompute(Xtrnsvd,Xtstsvd);
-d=[d1,d2];
-[~,ind]=min(d,[],2);
-out=Ytrn(ind);
-rate2(t+1)=mean(out==Y_tst1);
 
+%%%%   使用最小值   %%%%
+% d=[d1,d2];
+% [~,ind]=min(d,[],2);
+% out=Ytrn(ind);
+% rate2(t+1)=mean(out==Y_tst1);
+
+%%%%   使用平均值   %%%%
+d=zeros(600,100);
+for i=1:100
+    d(:,i)=mean([d1(:,(i*3-2):i*3),d2(:,i)],2);
+end
+[~,out]=min(d,[],2);
+rate2(t+1)=mean(out==Y_tst1);
 end
