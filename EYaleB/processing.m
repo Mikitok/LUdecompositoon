@@ -9,7 +9,7 @@ function [Xtrn, Ytrn, Xtst] =  processing( X_trn, Y_trn, X_tst, method, lda, k, 
 %  trainsample表示是使用原训练样本，还是新训练样本，有：new、origin两种，默认为new
 %  Xtrn是处理后的训练样本
 %  Xtst是处理后的测试样本
-if nargin>7||nargin<3     help processing; exit;      end
+if nargin>7||nargin<3     help processing;        end
 if nargin<7     trainsample='new';  end
 if nargin<6     k=[15,15];      end
 if nargin<5     lda='left_lda';   end
@@ -41,8 +41,7 @@ switch lower(method)
             end
         end
     otherwise
-         help processing; 
-         exit;
+         help processing;           
 end
 
 len=length(X_dec);
@@ -108,8 +107,7 @@ switch lower(lda)
             Xtst{i}=vec1(:,1:k(1))'*double(X_tst{i})*vec2(:,1:k(2));
         end
     otherwise
-         help processing; 
-         exit;
+         help processing;           
 end
 end
 
