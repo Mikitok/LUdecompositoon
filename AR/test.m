@@ -2,6 +2,7 @@ clear;
 load AR_part.mat;
 
 for t=0:6
+t=1;
 X_trn1=cell(100,1);
 X_tst1=cell(600,1);
 X_trn2=cell(100,1);

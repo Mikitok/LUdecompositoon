@@ -1,0 +1,22 @@
+clear;
+load AR_group.mat;
+
+[Xtrnlu, Ytrnlu, Xtstlu] =  processing( X_trn1, Y_trn1, X_tst1, 'lu', 'left_lda', [15,15], 'new' );
+[Xtrnsvd,Ytrnsvd,Xtstsvd] = processing( X_trn1, Y_trn1, X_tst1, 'svd', 'right_lda', [15,15], 'origin' );
+Ytrn=[Ytrnlu;Ytrnsvd];
+d1=discompute(Xtrnlu,Xtstlu);
+d2=discompute(Xtrnsvd,Xtstsvd);
+d=[d1,d2];
+[~,ind]=min(d,[],2);
+out=Ytrn(ind);
+rate1=mean(out==Y_tst1);
+
+[Xtrnlu, Ytrnlu, Xtstlu] =  processing( X_trn2, Y_trn2, X_tst2, 'lu', 'left_lda', [15,15], 'new' );
+[Xtrnsvd,Ytrnsvd,Xtstsvd] = processing( X_trn2, Y_trn2, X_tst2,  'svd', 'right_lda', [15,15], 'origin' );
+Ytrn=[Ytrnlu;Ytrnsvd];
+d1=discompute(Xtrnlu,Xtstlu);
+d2=discompute(Xtrnsvd,Xtstsvd);
+d=[d1,d2];
+[~,ind]=min(d,[],2);
+out=Ytrn(ind);
+rate1=mean(out==Y_tst1);
